@@ -1,4 +1,4 @@
-import { z } from 'zod';
+/*import { z } from 'zod';
 
 export const UpdatePetPostSchema = z.object({
     pet_name: z
@@ -50,3 +50,4 @@ export class UpdatePetPostDto {
         return [undefined, new UpdatePetPostDto(pet_name, description, image_url, status, hasfound)];
     }
 }
+*/

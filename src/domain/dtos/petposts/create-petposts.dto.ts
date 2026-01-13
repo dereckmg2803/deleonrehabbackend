@@ -1,4 +1,4 @@
-import { z } from 'zod';
+/*import { z } from 'zod';
 import { PetPostStatus } from '../../../data';
 
 export const CreatePetPostSchema = z.object({
@@ -59,3 +59,4 @@ export class CreatePetPostDto {
     )];
   }
 }
+*/
