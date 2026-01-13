@@ -9,17 +9,42 @@ export class ApplicantsController {
                 return res.status(400).json({ message: 'CV is required' });
             }
 
+            if (!req.body) {
+                return res.status(400).json({ message: 'Form data is missing' });
+            }
+
+            const {
+                name,
+                email,
+                phone,
+                license_type,
+                license_number,
+                license_state,
+                message
+            } = req.body;
+
             const cvUrl = await UploadCVService(req.file);
 
-            // Aquí luego guardas en DB:
-            // applicantService.create({ ...req.body, cvUrl });
+            // Aquí luego:
+            // applicantService.create({ name, email, phone, license_type, license_number, license_state, message, cvUrl });
 
-            res.status(201).json({
+            return res.status(201).json({
                 message: 'Applicant created successfully',
-                cvUrl
+                data: {
+                    name,
+                    email,
+                    phone,
+                    license_type,
+                    license_number,
+                    license_state,
+                    message,
+                    cvUrl
+                }
             });
+
         } catch (error) {
             handleError(error, res);
         }
     };
 }
+
