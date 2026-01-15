@@ -3,10 +3,11 @@ import {
     PrimaryGeneratedColumn,
     Column,
     CreateDateColumn,
+    BaseEntity
 } from 'typeorm';
 
 @Entity('applicants')
-export class Applicant {
+export class Applicant extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -25,11 +26,9 @@ export class Applicant {
     @Column({ length: 50 })
     license_number: string;
 
-    // Guardas el código: GA, FL, NY, etc.
     @Column({ length: 2 })
     license_state: string;
 
-    // URL o path en GCS
     @Column()
     cv_url: string;
 

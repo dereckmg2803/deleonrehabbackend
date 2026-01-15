@@ -1,50 +1,35 @@
 import { Request, Response } from 'express';
-import { UploadCVService } from './services/gcs.service';
+import { CreateApplicantDto } from '../../domain/dtos/applicants/create-applicant.dto';
+import { CreatorApplicantService } from './services/create.service';
 import { handleError } from '../common/handleError';
 
 export class ApplicantsController {
-    createApplicant = async (req: Request, res: Response) => {
+    constructor(
+        private readonly createApplicantService: CreatorApplicantService
+    ) { }
+
+    createApplicant = async (req: Request, res: Response): Promise<void> => {
         try {
             if (!req.file) {
-                return res.status(400).json({ message: 'CV is required' });
+                res.status(400).json({ message: 'CV is required' });
+                return;
             }
 
-            if (!req.body) {
-                return res.status(400).json({ message: 'Form data is missing' });
+            const [error, data] = CreateApplicantDto.execute(req.body);
+
+            if (error) {
+                res.status(422).json({ message: error });
+                return;
             }
 
-            const {
-                name,
-                email,
-                phone,
-                license_type,
-                license_number,
-                license_state,
-                message
-            } = req.body;
+            const result = await this.createApplicantService.execute(
+                data!,
+                req.file
+            );
 
-            const cvUrl = await UploadCVService(req.file);
-
-            // Aquí luego:
-            // applicantService.create({ name, email, phone, license_type, license_number, license_state, message, cvUrl });
-
-            return res.status(201).json({
-                message: 'Applicant created successfully',
-                data: {
-                    name,
-                    email,
-                    phone,
-                    license_type,
-                    license_number,
-                    license_state,
-                    message,
-                    cvUrl
-                }
-            });
-
+            res.status(201).json(result);
         } catch (error) {
             handleError(error, res);
         }
     };
 }
-
