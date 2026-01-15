@@ -6,6 +6,7 @@ import { UpdateApplicantStatusService } from './services/update-status.service';
 import { DeleteApplicantService } from './services/delete.service';
 import { DownloadCVService } from './services/download-cv.service';
 import { ApplicantStatus } from '../../data';
+import { handleError } from '../common/handleError';
 
 export class ApplicantsController {
 
@@ -15,7 +16,6 @@ export class ApplicantsController {
         private readonly getByIdService = new GetApplicantByIdService(),
         private readonly updateStatusService = new UpdateApplicantStatusService(),
         private readonly deleteService = new DeleteApplicantService(),
-        private readonly downloadCVService = new DownloadCVService(),
     ) { }
 
     createApplicant = async (req: Request, res: Response) => {
@@ -65,10 +65,11 @@ export class ApplicantsController {
 
     downloadCV = async (req: Request, res: Response) => {
         try {
-            const result = await this.downloadCVService.execute(req.params.id);
+            const result = await DownloadCVService(req.params.id);
             res.json(result);
-        } catch (error: any) {
-            res.status(404).json({ message: error.message });
+        } catch (error) {
+            handleError(error, res);
         }
-    };
+    }
+
 }
