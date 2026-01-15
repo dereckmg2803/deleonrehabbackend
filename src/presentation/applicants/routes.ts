@@ -1,18 +1,18 @@
 import { Router } from 'express';
+import multer from 'multer';
 import { ApplicantsController } from './controller';
-import { upload } from '../common/middlewares/upload';
+import { CreatorApplicantService } from './services/create.service';
 
-export class ApplicantsRoutes {
-    static get routes(): Router {
-        const router = Router();
-        const controller = new ApplicantsController();
+const router = Router();
+const upload = multer();
 
-        router.post(
-            '/applicants',
-            upload.single('cv'),
-            controller.createApplicant
-        );
+const service = new CreatorApplicantService();
+const controller = new ApplicantsController(service);
 
-        return router;
-    }
-}
+router.post(
+    '/applicants',
+    upload.single('cv'),
+    controller.createApplicant
+);
+
+export default router;
