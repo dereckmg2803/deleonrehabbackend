@@ -8,11 +8,11 @@ import {
 } from 'typeorm';
 
 export enum ApplicantStatus {
-    PENDING = 'Pendiente',
-    REVIEWED = 'Revisado',
-    CONTACTED = 'Contactado',
-    REJECTED = 'Rechazado',
-    HIRED = 'Contratado',
+    PENDING = 'pending',
+    REVIEWED = 'reviewed',
+    CONTACTED = 'contacted',
+    REJECTED = 'rejected',
+    HIRED = 'hired',
 }
 
 @Entity('applicants')
