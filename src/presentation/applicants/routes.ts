@@ -3,16 +3,21 @@ import multer from 'multer';
 import { ApplicantsController } from './controller';
 import { CreatorApplicantService } from './services/create.service';
 
-const router = Router();
-const upload = multer();
+export class ApplicantsRoutes {
+    static get routes(): Router {
+        const router = Router();
 
-const service = new CreatorApplicantService();
-const controller = new ApplicantsController(service);
+        const upload = multer();
 
-router.post(
-    '/applicants',
-    upload.single('cv'),
-    controller.createApplicant
-);
+        const service = new CreatorApplicantService();
+        const controller = new ApplicantsController(service);
 
-export default router;
+        router.post(
+            '/applicants',
+            upload.single('cv'),
+            controller.createApplicant
+        );
+
+        return router;
+    }
+}
